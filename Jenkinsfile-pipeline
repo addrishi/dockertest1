@@ -1,0 +1,47 @@
+pipeline{
+    agent any
+     stages {
+	
+		stage('Clone Repo'){
+
+			sh 'rm -rf dockertest1'
+		
+			sh 'git clone https://github.com/addrishi/dockertest1.git' 
+
+		}
+	
+	
+		stage('Build Docker Image'){
+		
+			sh 'cd /var/lib/jenkins/workspace/pipeline2/dockertest1'
+		
+			sh 'cp /var/lib/jenkins/workspace/pipeline2/dockertest1/* /var/lib/jenkins/workspace/pipeline1'
+		
+			sh 'docker build -t harishiea78/pipelinetest:v1 .'
+	
+		}
+	
+	
+		stage('Push Image to Docker Hub'){
+		
+			sh 'docker push harishiea78/pipelinetest:v1'
+	
+		}
+	
+	
+		stage ('Deploy to Docker Host'){
+		
+			sh 'docker -H tcp://172.31.27.27:2375 run --rm -dit --name webapp1 --hostname webapp1 -p 9000:80 harishiea78/pipelinetest:v1'
+	
+		}
+	
+	
+		stage ('Check Webapp Reachability'){
+		
+			sh 'curl http://ec2-34-229-127-229.compute-1.amazonaws.com:9000'
+	
+		}
+    
+  }
+  
+ }
