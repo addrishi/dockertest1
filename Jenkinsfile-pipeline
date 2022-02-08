@@ -29,8 +29,8 @@ pipeline{
 	
 		stage('Deploy to Docker Host'){
 		  steps{	
-		  	sh'docker -H tcp://172.31.16.96:2375 stop webapp1'
-			sh 'docker -H tcp://172.31.16.96:2375 run --rm -dit --name webapp1 --hostname webapp1 -p 9000:80 harishiea78/pipelinetest:v1'
+		  	sh'docker -H tcp://172.31.95.16:2375 stop webapp1'
+			sh 'docker -H tcp://172.31.95.16:2375 run --rm -dit --name webapp1 --hostname webapp1 -p 9000:80 harishiea78/pipelinetest:v1'
 	               }
 		}
 	
@@ -38,7 +38,7 @@ pipeline{
 		stage('Check Webapp Reachability'){
 		  steps{	
 		  	sh'sleep 10s'
-			sh 'curl ec2-3-91-59-132.compute-1.amazonaws.com:9000'
+			sh 'curl ec2-44-202-41-18.compute-1.amazonaws.com:9000'
 			}
 		}
     
